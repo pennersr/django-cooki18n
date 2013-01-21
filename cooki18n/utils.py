@@ -1,8 +1,9 @@
 from django.utils.translation import get_language_from_request as _get_language_from_request
 
+
 class RequestWithoutSession(object):
     def __init__(self, wrapped):
-       object.__setattr__(self, 'inner', wrapped)
+        object.__setattr__(self, 'inner', wrapped)
 
     def __getattr__(self, attr):
         if attr == 'session':
@@ -12,8 +13,6 @@ class RequestWithoutSession(object):
     def __setattr__(self, attr, value):
         return setattr(self.inner, attr, value)
 
-def get_language_from_request(request):
-    return _get_language_from_request(RequestWithoutSession(request))
 
-    
-
+def get_language_from_request(request, **kwargs):
+    return _get_language_from_request(RequestWithoutSession(request), **kwargs)
