@@ -3,13 +3,13 @@ from django.utils import translation
 from django.utils.cache import patch_vary_headers
 from django.core.urlresolvers import get_resolver, LocaleRegexURLResolver
 
-from utils import get_language_from_request
+from . import utils
 
 
 class LocaleMiddleware(object):
     def process_request(self, request):
         check_path = self.is_language_prefix_patterns_used()
-        language = get_language_from_request(request, check_path=check_path)
+        language = utils.get_language_from_request(request, check_path=check_path)
         translation.activate(language)
         request.LANGUAGE_CODE = translation.get_language()
 
@@ -24,7 +24,7 @@ class LocaleMiddleware(object):
         return response
 
     def is_language_prefix_patterns_used(self):
-        """ 
+        """
         Returns `True` if the `LocaleRegexURLResolver` is used
         at root level of the urlpatterns, else it returns `False`.
         """
