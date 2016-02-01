@@ -14,7 +14,9 @@ def set_language(request):
     redirect to the page in the request (the 'next' parameter) without changing
     any state.
     """
-    next = request.REQUEST.get('next', None)
+    next = request.POST.get(
+        'next',
+        request.GET.get('next'))
     if not next:
         next = request.META.get('HTTP_REFERER', None)
     if not next:
