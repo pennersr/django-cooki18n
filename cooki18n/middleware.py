@@ -1,12 +1,13 @@
 from django.conf import settings
 from django.utils import translation
 from django.utils.cache import patch_vary_headers
+from django.utils.deprecation import MiddlewareMixin
 from django.core.urlresolvers import get_resolver, LocaleRegexURLResolver
 
 from . import utils
 
 
-class LocaleMiddleware(object):
+class LocaleMiddleware(MiddlewareMixin):
     def process_request(self, request):
         check_path = self.is_language_prefix_patterns_used()
         language = utils.get_language_from_request(request, check_path=check_path)
